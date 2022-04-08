@@ -1,0 +1,79 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: simple-app
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-app
+  labels:
+    app: simple-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: simple-app
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/role: 'internal-app'
+        vault.hashicorp.com/agent-inject-status: 'update'
+        vault.hashicorp.com/agent-inject-secret-database-config.json: 'internal/data/database/config'
+        vault.hashicorp.com/agent-inject-template-database-config.json: |
+          {{- with secret "internal/data/database/config" -}}
+          {{ .Data.data }}
+          {{- end -}}
+      labels:
+        app: simple-app
+    spec:
+      serviceAccountName: internal-app
+      containers:
+      - name: simple-app
+        image: fvoges/simple_app:0.1.0
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8888
+        env:
+        - name: JSON_FILE
+          value: "/vault/secrets/database-config.json"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: simple-app
+spec:
+  type: LoadBalancer
+  selector:
+    app: simple-app
+  ports:
+    - protocol: TCP
+      port: 8888
+      targetPort: 8888
+---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: simple-app
+#   annotations:
+#     nginx.ingress.kubernetes.io/rewrite-target: /$1
+# spec:
+#   rules:
+#     - host: localhost
+#       http:
+#         paths:
+#           - path: /
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: simple-app
+#                 port:
+#                   number: 8888
