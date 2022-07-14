@@ -21,6 +21,7 @@ spec:
         vault.hashicorp.com/agent-inject: 'true'
         vault.hashicorp.com/role: 'internal-app'
         vault.hashicorp.com/agent-inject-status: 'update'
+        vault.hashicorp.com/namespace: 'simple-app'
         vault.hashicorp.com/agent-inject-secret-database-config.json: 'internal/data/database/config'
         vault.hashicorp.com/agent-inject-template-database-config.json: |
           {{- with secret "internal/data/database/config" -}}
