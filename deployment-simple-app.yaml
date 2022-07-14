@@ -30,7 +30,7 @@ spec:
       labels:
         app: simple-app
     spec:
-      serviceAccountName: internal-app
+      serviceAccountName: simple-app
       containers:
       - name: simple-app
         image: fvoges/simple_app:0.1.0
