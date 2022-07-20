@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: simple-app
+  name: simple-app-sa
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -19,18 +19,22 @@ spec:
     metadata:
       annotations:
         vault.hashicorp.com/agent-inject: 'true'
-        vault.hashicorp.com/role: 'internal-app'
+        # vault.hashicorp.com/tls-skip-verif: 'true'
+        # vault.hashicorp.com/tls-secret: 'vault-tls'
+        # vault.hashicorp.com/tls-server-name: 'vault.example.com'
+        # vault.hashicorp.com/ca-cert: '/vault/tls/ca.crt'
+        vault.hashicorp.com/role: 'simple-app-role'
         vault.hashicorp.com/agent-inject-status: 'update'
         vault.hashicorp.com/namespace: 'simple-app'
         vault.hashicorp.com/agent-inject-secret-database-config.json: 'internal/data/database/config'
         vault.hashicorp.com/agent-inject-template-database-config.json: |
           {{- with secret "internal/data/database/config" -}}
-          {{ .Data.data }}
+          {{ .Data.data | toUnescapedJSON }}
           {{- end -}}
       labels:
         app: simple-app
     spec:
-      serviceAccountName: simple-app
+      serviceAccountName: simple-app-sa
       containers:
       - name: simple-app
         image: fvoges/simple_app:0.1.0
