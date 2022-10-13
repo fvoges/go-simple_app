@@ -19,7 +19,7 @@ spec:
     metadata:
       annotations:
         vault.hashicorp.com/agent-inject: 'true'
-        # vault.hashicorp.com/tls-skip-verif: 'true'
+        # vault.hashicorp.com/tls-skip-verify: 'true'
         # vault.hashicorp.com/tls-secret: 'vault-tls'
         # vault.hashicorp.com/tls-server-name: 'vault.example.com'
         # vault.hashicorp.com/ca-cert: '/vault/tls/ca.crt'
