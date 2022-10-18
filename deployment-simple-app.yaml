@@ -82,3 +82,16 @@ spec:
 #                 name: simple-app
 #                 port:
 #                   number: 8888
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: simple-app
+spec:
+  host: simple-app.apps-crc.testing
+  port:
+    targetPort: 8888
+  to:
+    kind: Service
+    name: simple-app
