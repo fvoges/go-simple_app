@@ -19,12 +19,13 @@ spec:
     metadata:
       annotations:
         vault.hashicorp.com/agent-inject: 'true'
+        # vault.hashicorp.com/log-level: 'debug'
         # vault.hashicorp.com/tls-skip-verify: 'true'
-        # vault.hashicorp.com/tls-secret: 'vault-tls'
-        # vault.hashicorp.com/tls-server-name: 'vault.example.com'
+        # vault.hashicorp.com/tls-secret: 'vault-tls-ca'
         # vault.hashicorp.com/ca-cert: '/vault/tls/ca.crt'
+        # vault.hashicorp.com/tls-server-name: 'vault.example.com'
+        vault.hashicorp.com/auth-path: 'auth/kubernetes'
         vault.hashicorp.com/role: 'simple-app-role'
-        vault.hashicorp.com/agent-inject-status: 'update'
         vault.hashicorp.com/namespace: 'simple-app'
         vault.hashicorp.com/agent-inject-secret-database-config.json: 'internal/data/database/config'
         vault.hashicorp.com/agent-inject-template-database-config.json: |
@@ -89,7 +90,7 @@ kind: Route
 metadata:
   name: simple-app
 spec:
-  host: simple-app.apps-crc.testing
+  # host: simple-app.apps-crc.testing
   port:
     targetPort: 8888
   to:
