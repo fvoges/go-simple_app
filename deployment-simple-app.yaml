@@ -24,6 +24,7 @@ spec:
         # vault.hashicorp.com/tls-secret: 'vault-tls-ca'
         # vault.hashicorp.com/ca-cert: '/vault/tls/ca.crt'
         # vault.hashicorp.com/tls-server-name: 'vault.example.com'
+        # vault.hashicorp.com/service: 'https://vault.example.com:8200'
         vault.hashicorp.com/auth-path: 'auth/kubernetes'
         vault.hashicorp.com/role: 'simple-app-role'
         vault.hashicorp.com/namespace: 'simple-app'
